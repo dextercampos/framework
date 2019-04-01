@@ -175,13 +175,14 @@ class ExceptionHandler extends Handler
      *
      * @param \Throwable $exception The exception to get the message for
      * @param string $default The default message to use if in production or exception message is missing
+     * @param mixed[]|null $params Message string parameters
      *
      * @return string
      */
-    private function getExceptionMessage(Throwable $exception, string $default): string
+    private function getExceptionMessage(Throwable $exception, string $default, ?array $params = null): string
     {
         return $this->inProduction() === false && empty($exception->getMessage()) === false ?
-            $exception->getMessage() :
+            $this->translator->trans($exception->getMessage(), $params) ?? $default :
             $default;
     }
 
